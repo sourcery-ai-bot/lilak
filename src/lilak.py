@@ -108,28 +108,27 @@ class Lilak:
                                  PERSIAN_HAMZE, PERSIAN_KAF, PERSIAN_GAF, ARABIC_TE]:
             if  SeperatCharacter in word:
                 word=word.split(SeperatCharacter)[1]
-        
+
         for i, c in enumerate(word):
 
-            if c == PERSIAN_BE  or \
-               c == PERSIAN_PE  or \
-               c == PERSIAN_TE  or \
-               c == PERSIAN_SE  or \
-               c == PERSIAN_SAD or \
-               c == PERSIAN_ZAD:
-                dandane = dandane + 1
+            if c in [
+                PERSIAN_BE,
+                PERSIAN_PE,
+                PERSIAN_TE,
+                PERSIAN_SE,
+                PERSIAN_SAD,
+                PERSIAN_ZAD,
+            ]:
+                dandane += 1
 
-            if c == PERSIAN_SIN  or \
-               c == PERSIAN_SHIN:
-                dandane = dandane + 3
+            if c in [PERSIAN_SIN, PERSIAN_SHIN]:
+                dandane += 3
 
-            if c == PERSIAN_YE  or \
-               c == PERSIAN_NON:
-                if(i+1 < len(word)):
-                    n = word[i+1]
+            if c in [PERSIAN_YE, PERSIAN_NON] and (i + 1 < len(word)):
+                n = word[i+1]
 
-                    if n != ZWNJ:
-                        dandane = dandane + 1
+                if n != ZWNJ:
+                    dandane += 1
 
         return (dandane < 5)
 
@@ -217,10 +216,7 @@ class Lilak:
 
         remove_file(filename)
         with open(filename, 'w', encoding='utf-8', newline='') as f:
-            frequency = ''
-            for letter in letters_s:
-                frequency += letter[0]
-
+            frequency = ''.join(letter[0] for letter in letters_s)
             f.write(affix.format(VERSIAN, datetime.datetime.now().strftime("%Y-%m-%d"), frequency))
 
         if not os.path.isfile(filename):
